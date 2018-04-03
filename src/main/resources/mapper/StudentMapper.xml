@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhku.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.zhku.bean.Student">
+    <id column="s_number" jdbcType="CHAR" property="sNumber" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="s_campus" jdbcType="INTEGER" property="sCampus" />
+    <result column="s_academy" jdbcType="INTEGER" property="sAcademy" />
+    <result column="s_major" jdbcType="INTEGER" property="sMajor" />
+    <result column="s_class" jdbcType="INTEGER" property="sClass" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    s_number, s_name, s_campus, s_academy, s_major, s_class, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.zhku.bean.StudentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where s_number = #{sNumber,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from student
+    where s_number = #{sNumber,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhku.bean.StudentExample">
+    delete from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhku.bean.Student">
+    insert into student (s_number, s_name, s_campus, 
+      s_academy, s_major, s_class, 
+      user_id)
+    values (#{sNumber,jdbcType=CHAR}, #{sName,jdbcType=VARCHAR}, #{sCampus,jdbcType=INTEGER}, 
+      #{sAcademy,jdbcType=INTEGER}, #{sMajor,jdbcType=INTEGER}, #{sClass,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhku.bean.Student">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sNumber != null">
+        s_number,
+      </if>
+      <if test="sName != null">
+        s_name,
+      </if>
+      <if test="sCampus != null">
+        s_campus,
+      </if>
+      <if test="sAcademy != null">
+        s_academy,
+      </if>
+      <if test="sMajor != null">
+        s_major,
+      </if>
+      <if test="sClass != null">
+        s_class,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sNumber != null">
+        #{sNumber,jdbcType=CHAR},
+      </if>
+      <if test="sName != null">
+        #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="sCampus != null">
+        #{sCampus,jdbcType=INTEGER},
+      </if>
+      <if test="sAcademy != null">
+        #{sAcademy,jdbcType=INTEGER},
+      </if>
+      <if test="sMajor != null">
+        #{sMajor,jdbcType=INTEGER},
+      </if>
+      <if test="sClass != null">
+        #{sClass,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhku.bean.StudentExample" resultType="java.lang.Long">
+    select count(*) from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update student
+    <set>
+      <if test="record.sNumber != null">
+        s_number = #{record.sNumber,jdbcType=CHAR},
+      </if>
+      <if test="record.sName != null">
+        s_name = #{record.sName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sCampus != null">
+        s_campus = #{record.sCampus,jdbcType=INTEGER},
+      </if>
+      <if test="record.sAcademy != null">
+        s_academy = #{record.sAcademy,jdbcType=INTEGER},
+      </if>
+      <if test="record.sMajor != null">
+        s_major = #{record.sMajor,jdbcType=INTEGER},
+      </if>
+      <if test="record.sClass != null">
+        s_class = #{record.sClass,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update student
+    set s_number = #{record.sNumber,jdbcType=CHAR},
+      s_name = #{record.sName,jdbcType=VARCHAR},
+      s_campus = #{record.sCampus,jdbcType=INTEGER},
+      s_academy = #{record.sAcademy,jdbcType=INTEGER},
+      s_major = #{record.sMajor,jdbcType=INTEGER},
+      s_class = #{record.sClass,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhku.bean.Student">
+    update student
+    <set>
+      <if test="sName != null">
+        s_name = #{sName,jdbcType=VARCHAR},
+      </if>
+      <if test="sCampus != null">
+        s_campus = #{sCampus,jdbcType=INTEGER},
+      </if>
+      <if test="sAcademy != null">
+        s_academy = #{sAcademy,jdbcType=INTEGER},
+      </if>
+      <if test="sMajor != null">
+        s_major = #{sMajor,jdbcType=INTEGER},
+      </if>
+      <if test="sClass != null">
+        s_class = #{sClass,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where s_number = #{sNumber,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhku.bean.Student">
+    update student
+    set s_name = #{sName,jdbcType=VARCHAR},
+      s_campus = #{sCampus,jdbcType=INTEGER},
+      s_academy = #{sAcademy,jdbcType=INTEGER},
+      s_major = #{sMajor,jdbcType=INTEGER},
+      s_class = #{sClass,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where s_number = #{sNumber,jdbcType=CHAR}
+  </update>
+</mapper>
